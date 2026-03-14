@@ -1,7 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Play, Zap, Heart, Brain } from 'lucide-react';
+import { ArrowRight, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+
+// Pre-compute particle positions at module level to avoid impure calls during render
+const PARTICLES = Array.from({ length: 20 }, () => ({
+  left: Math.random() * 100,
+  top: Math.random() * 100,
+  delay: Math.random() * 4,
+  duration: 4 + Math.random() * 4,
+}));
 
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -81,15 +89,15 @@ export default function Hero() {
         />
 
         {/* Floating Particles */}
-        {[...Array(20)].map((_, i) => (
+        {PARTICLES.map((p, i) => (
           <div
             key={i}
             className="absolute w-2 h-2 rounded-full bg-[#4d67ff]/20 animate-float"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 4}s`,
-              animationDuration: `${4 + Math.random() * 4}s`,
+              left: `${p.left}%`,
+              top: `${p.top}%`,
+              animationDelay: `${p.delay}s`,
+              animationDuration: `${p.duration}s`,
             }}
           />
         ))}
@@ -211,7 +219,7 @@ export default function Hero() {
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-[#4d67ff]/10 flex items-center justify-center">
-                  <Brain className="w-5 h-5 text-[#4d67ff]" />
+                  <span className="text-[#4d67ff] text-lg">🧠</span>
                 </div>
                 <div>
                   <div className="text-sm font-medium text-[#333333]">AI驱动</div>

@@ -1,26 +1,5 @@
 import { Github } from 'lucide-react';
 
-const footerLinks = {
-  products: [
-    { name: '开源抓龙虾机', to: '/ecosystem' },
-    { name: '智能养殖系统', to: '/ecosystem' },
-    { name: '水质监测设备', to: '/ecosystem' },
-    { name: 'AI视觉识别', to: '/ecosystem' },
-  ],
-  company: [
-    { name: '关于我们', to: '/' },
-    { name: '联系方式', to: '/' },
-    { name: '合作伙伴', to: '/' },
-    { name: '加入我们', to: '/' },
-  ],
-  support: [
-    { name: '帮助中心', to: '/' },
-    { name: '用户指南', to: '/' },
-    { name: '售后服务', to: '/' },
-    { name: '常见问题', to: '/' },
-  ],
-};
-
 export default function Footer() {
   return (
     <footer className="bg-[#333333] text-white">
