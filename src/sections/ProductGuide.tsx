@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Filter, Search, SlidersHorizontal, X, ChevronDown, Grid3X3, List, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,12 +6,14 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { products, categories, tagFilters, statusFilters } from '@/data/products';
-import type { Product } from '@/data/products';
+import { useDocumentMeta } from '@/hooks/use-document-meta';
 
 export default function ProductGuide() {
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
+  useDocumentMeta({
+    title: '探索 OpenClaw 生态',
+    description: '从开源项目到云端服务，从社区网站到技能市场，一站式发现 OpenClaw 生态全景，智能筛选龙虾产品。',
+  });
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [showDomesticOnly, setShowDomesticOnly] = useState(false);
@@ -21,17 +23,19 @@ export default function ProductGuide() {
 
   // Read category from URL search params
   const [searchParams] = useSearchParams();
+  const categoryParam = searchParams.get('category');
 
-  useEffect(() => {
-    const categoryParam = searchParams.get('category');
-    if (categoryParam) {
-      setSelectedCategories([categoryParam]);
-      setShowFilters(true);
-    }
-  }, [searchParams]);
+  // Initialize selectedCategories from URL param, allow user override
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(() => {
+    const param = new URLSearchParams(window.location.search).get('category');
+    return param ? [param] : [];
+  });
 
-  // Apply filters
-  useEffect(() => {
+  // Show filters panel if category param exists
+  const shouldShowFilters = showFilters || !!categoryParam;
+
+  // Derive filtered products with useMemo instead of useEffect + setState
+  const filteredProducts = useMemo(() => {
     let result = [...products];
 
     // Search filter
@@ -85,7 +89,7 @@ export default function ProductGuide() {
       }
     });
 
-    setFilteredProducts(result);
+    return result;
   }, [searchQuery, selectedCategories, selectedTags, selectedStatuses, showDomesticOnly, sortBy]);
 
   const toggleFilter = (
@@ -147,7 +151,7 @@ export default function ProductGuide() {
             {/* Filter Toggle */}
             <Button
               variant="outline"
-              className={`h-12 px-6 rounded-xl border-2 ${showFilters
+              className={`h-12 px-6 rounded-xl border-2 ${shouldShowFilters
                 ? 'border-[#4d67ff] text-[#4d67ff]'
                 : 'border-gray-200 text-[#666666]'
                 }`}
@@ -166,7 +170,7 @@ export default function ProductGuide() {
             <div className="relative">
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
+                onChange={(e) => setSortBy(e.target.value as 'name' | 'stars')}
                 className="h-12 px-4 pr-10 rounded-xl border-2 border-gray-200 text-[#666666] focus:border-[#4d67ff] focus:outline-none appearance-none bg-white cursor-pointer"
               >
                 <option value="name">按名称</option>
@@ -203,7 +207,7 @@ export default function ProductGuide() {
           </div>
 
           {/* Filter Panel */}
-          {showFilters && (
+          {shouldShowFilters && (
             <div className="mt-6 pt-6 border-t border-gray-100 animate-slide-up">
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Category Filter */}

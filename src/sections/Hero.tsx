@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useDocumentMeta } from '@/hooks/use-document-meta';
 
 // Pre-compute particle positions at module level to avoid impure calls during render
 const PARTICLES = Array.from({ length: 20 }, () => ({
@@ -12,6 +13,10 @@ const PARTICLES = Array.from({ length: 20 }, () => ({
 }));
 
 export default function Hero() {
+  useDocumentMeta({
+    title: '首页',
+    description: 'OpenClaw 龙虾圈，汇聚生态产品、云端服务、技能社区和学习资料，一站式解决养虾难题，让人人都能轻松养虾！',
+  });
   const heroRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });

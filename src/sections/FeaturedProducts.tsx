@@ -4,8 +4,13 @@ import { Heart, Star, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { featuredProducts } from '@/data/products';
+import { useDocumentMeta } from '@/hooks/use-document-meta';
 
 export default function FeaturedProducts() {
+  useDocumentMeta({
+    title: '龙虾产品大全',
+    description: '基于 OpenClaw 生态的热门开源项目和产品服务，选择最适合你的龙虾产品。',
+  });
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
   const [likedProducts, setLikedProducts] = useState<Set<string>>(new Set());
   const navigate = useNavigate();

@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TrendingUp, Users, Cpu, DollarSign, Globe, Lightbulb } from 'lucide-react';
+import { useDocumentMeta } from '@/hooks/use-document-meta';
 
 const trends = [
   {
@@ -65,6 +66,10 @@ const stats = [
 ];
 
 export default function MarketTrends() {
+  useDocumentMeta({
+    title: '养虾学堂',
+    description: '汇总全网养虾资料，精选优质教程，从小白到大师，不花钱也能养好虾，打破信息差，杜绝智商税！',
+  });
   const [animatedStats, setAnimatedStats] = useState<number[]>(stats.map(() => 0));
   const sectionRef = useRef<HTMLDivElement>(null);
   const [hasAnimated, setHasAnimated] = useState(false);

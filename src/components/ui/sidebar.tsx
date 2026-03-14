@@ -32,6 +32,9 @@ const SIDEBAR_WIDTH_MOBILE = "18rem"
 const SIDEBAR_WIDTH_ICON = "3rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 
+// Counter for deterministic skeleton widths
+let skeletonIdx = 0
+
 type SidebarContextProps = {
   state: "expanded" | "collapsed"
   open: boolean
@@ -606,10 +609,8 @@ function SidebarMenuSkeleton({
 }: React.ComponentProps<"div"> & {
   showIcon?: boolean
 }) {
-  // Random width between 50 to 90%.
-  const width = React.useMemo(() => {
-    return `${Math.floor(Math.random() * 40) + 50}%`
-  }, [])
+  // Deterministic skeleton widths (50-90%) using component instance index
+  const width = `${50 + ((skeletonIdx++) % 5) * 10}%`
 
   return (
     <div

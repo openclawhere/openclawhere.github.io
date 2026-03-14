@@ -2,8 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { categories } from '@/data/products';
+import { useDocumentMeta } from '@/hooks/use-document-meta';
 
 export default function ProductCategories() {
+  useDocumentMeta({
+    title: '模型分类',
+    description: '整理了市面上主流的适配龙虾的开源模型服务，按需选用，为你的龙虾注入灵魂。',
+  });
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const navigate = useNavigate();
 

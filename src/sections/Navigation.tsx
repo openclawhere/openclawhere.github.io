@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -24,9 +24,13 @@ export default function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 路由变化时关闭移动端菜单并滚动到顶部
-  useEffect(() => {
+  // Close mobile menu on navigation via Link clicks (handled by onClick)
+  const closeMobileMenu = useCallback(() => {
     setIsMobileMenuOpen(false);
+  }, []);
+
+  // Scroll to top on route change
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
@@ -107,7 +111,7 @@ export default function Navigation() {
       >
         <div
           className="absolute inset-0 bg-black/20 backdrop-blur-sm"
-          onClick={() => setIsMobileMenuOpen(false)}
+          onClick={closeMobileMenu}
         />
         <div
           className={`absolute top-20 left-4 right-4 bg-white rounded-2xl shadow-2xl p-6 transition-all duration-300 ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'
@@ -118,6 +122,7 @@ export default function Navigation() {
               <Link
                 key={link.name}
                 to={link.to}
+                onClick={closeMobileMenu}
                 className={`px-4 py-3 rounded-xl transition-colors font-medium ${location.pathname === link.to
                   ? 'text-[#4d67ff] bg-[#4d67ff]/5'
                   : 'text-[#333333] hover:text-[#4d67ff] hover:bg-[#4d67ff]/5'

@@ -1,0 +1,17 @@
+# OpenClaw 龙虾圈 - robots.txt
+# https://openclawhere.github.io/
+
+User-agent: *
+Allow: /
+Disallow: /assets/
+
+# Sitemaps
+Sitemap: https://openclawhere.github.io/sitemap.xml
+
+# Baidu Spider
+User-agent: Baiduspider
+Allow: /
+
+# Google Bot
+User-agent: Googlebot
+Allow: /
