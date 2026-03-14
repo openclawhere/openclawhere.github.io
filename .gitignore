@@ -1,5 +1,6 @@
 node_modules
 dist
+script
 .agent
 .vscode
 .DS_Store

@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Heart, Star, ExternalLink } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { featuredProducts } from '@/data/products';
 import { useDocumentMeta } from '@/hooks/use-document-meta';
+import { getProductScores } from '@/lib/score';
 
 export default function FeaturedProducts() {
   useDocumentMeta({
@@ -12,20 +12,6 @@ export default function FeaturedProducts() {
     description: '基于 OpenClaw 生态的热门开源项目和产品服务，选择最适合你的龙虾产品。',
   });
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
-  const [likedProducts, setLikedProducts] = useState<Set<string>>(new Set());
-  const navigate = useNavigate();
-
-  const toggleLike = (productId: string) => {
-    setLikedProducts(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(productId)) {
-        newSet.delete(productId);
-      } else {
-        newSet.add(productId);
-      }
-      return newSet;
-    });
-  };
 
   return (
     <section id="featured" className="py-20 lg:py-28 bg-[#f0f0f0]">
@@ -49,7 +35,7 @@ export default function FeaturedProducts() {
           {featuredProducts.map((product, index) => (
             <div
               key={product.id}
-              className="group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+              className="group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 transform-gpu"
               onMouseEnter={() => setHoveredProduct(product.id)}
               onMouseLeave={() => setHoveredProduct(null)}
               style={{
@@ -57,38 +43,52 @@ export default function FeaturedProducts() {
               }}
             >
               {/* Gradient Header */}
-              <div className="relative h-40 bg-gradient-to-br from-[#4d67ff]/20 via-[#6b82ff]/10 to-[#f8f9ff] overflow-hidden flex items-center justify-center">
-                <div className={`text-6xl transition-transform duration-500 ${hoveredProduct === product.id ? 'scale-125' : 'scale-100'
-                  }`}>
-                  {product.category === 'open-source' && '🦞'}
-                  {product.category === 'cloud' && '☁️'}
-                  {product.category === 'community' && '👥'}
-                  {product.category === 'ecosystem' && '🔧'}
-                </div>
+              <div className="relative aspect-video w-full bg-gradient-to-br from-[#4d67ff]/20 via-[#6b82ff]/10 to-[#f8f9ff] flex items-center justify-center">
+                {product.image ? (
+                  <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                ) : (
+                  <div className={`text-6xl transition-transform duration-500 ${hoveredProduct === product.id ? 'scale-125' : 'scale-100'
+                    }`}>
+                    {product.category === 'open-source' && '🦞'}
+                    {product.category === 'cloud' && '☁️'}
+                    {product.category === 'community' && '👥'}
+                    {product.category === 'ecosystem' && '🔧'}
+                  </div>
+                )}
+                {/* Overlay gradient to ensure text readability */}
+                {product.image && <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />}
 
-                {/* Like Button */}
-                <button
-                  onClick={() => toggleLike(product.id)}
-                  className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md hover:shadow-lg transition-all"
-                >
-                  <Heart
-                    className={`w-5 h-5 transition-colors ${likedProducts.has(product.id)
-                      ? 'fill-red-500 text-red-500'
-                      : 'text-[#666666]'
-                      }`}
-                  />
-                </button>
+                {/* Visit Button replaces Heart */}
+                {product.url && product.url.startsWith('http') && (
+                  <a 
+                    href={product.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md hover:shadow-lg transition-all group/visit"
+                  >
+                    <ExternalLink className="w-4 h-4 text-[#666666] group-hover/visit:text-[#4d67ff] transition-colors" />
+                  </a>
+                )}
 
                 {/* Badges */}
                 <div className="absolute top-4 left-4 flex flex-col gap-2">
-                  {product.isDomestic ? (
-                    <Badge className="bg-[#4d67ff] text-white border-0">国内</Badge>
-                  ) : (
-                    <Badge variant="secondary" className="bg-white/90 text-[#666666] border-0">国际</Badge>
-                  )}
                   <Badge variant="outline" className="bg-white/90 text-[#333333] border-0">
                     {product.categoryName}
                   </Badge>
+                </div>
+
+                {/* Tags moved to Header Bottom */}
+                <div className="absolute bottom-4 left-4 flex flex-wrap gap-2 pr-4">
+                  {product.language && (
+                    <span className="px-2 py-1 text-xs rounded-full bg-white/80 backdrop-blur-md text-[#4d67ff] font-medium shadow-sm">
+                      {product.language}
+                    </span>
+                  )}
+                  {product.features && (
+                    <span className="px-2 py-1 text-xs rounded-full bg-white/60 backdrop-blur-md text-[#666666] line-clamp-1 shadow-sm">
+                      {product.features}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -96,61 +96,73 @@ export default function FeaturedProducts() {
               <div className="p-6">
                 <div className="flex items-start justify-between mb-2">
                   <div>
-                    <h3 className="text-lg font-semibold text-[#333333] group-hover:text-[#4d67ff] transition-colors">
+                    <h3 className="text-lg font-semibold text-[#333333] group-hover:text-[#4d67ff] transition-colors line-clamp-1">
                       {product.name}
                     </h3>
-                    <p className="text-sm text-[#666666]">{product.company}</p>
                   </div>
-                  {product.stars && (
-                    <div className="text-right">
-                      <div className="text-lg font-bold text-[#4d67ff]">
-                        ⭐ {product.stars}
-                      </div>
+                  <div className="text-right pl-2 shrink-0">
+                    <div className="text-sm font-medium text-[#666666] bg-gray-50 px-2 py-1 rounded-md">
+                      {product.company}
                     </div>
-                  )}
+                  </div>
                 </div>
 
                 <p className="text-sm text-[#666666] line-clamp-2 mb-4">
                   {product.description}
                 </p>
 
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {product.language && (
-                    <span className="px-2 py-1 text-xs rounded-full bg-[#4d67ff]/10 text-[#4d67ff]">
-                      {product.language}
-                    </span>
-                  )}
-                  {product.features && (
-                    <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-[#666666] line-clamp-1">
-                      {product.features}
-                    </span>
-                  )}
-                </div>
-
-                {/* Action */}
+                {/* Multi-Dimensional Ratings */}
                 <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                  <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`w-4 h-4 ${i < 4 ? 'fill-yellow-400 text-yellow-400' : 'text-gray-200'
-                          }`}
-                      />
-                    ))}
+                  <div className="flex flex-col gap-1.5 text-[11px] text-[#666666] flex-1 pr-4">
+                    <div className="flex items-center gap-2">
+                      <span className="w-12 shrink-0">上手难度</span>
+                      <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-blue-400 rounded-full" 
+                          style={{ width: `${(Number(getProductScores(product.id).difficulty) / 10) * 100}%` }}
+                        />
+                      </div>
+                      <span className="w-5 font-medium text-right shrink-0">{getProductScores(product.id).difficulty}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-12 shrink-0">定制程度</span>
+                      <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-indigo-400 rounded-full" 
+                          style={{ width: `${(Number(getProductScores(product.id).customizability) / 10) * 100}%` }}
+                        />
+                      </div>
+                      <span className="w-5 font-medium text-right shrink-0">{getProductScores(product.id).customizability}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-12 shrink-0">速度性能</span>
+                      <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-emerald-400 rounded-full" 
+                          style={{ width: `${(Number(getProductScores(product.id).speed) / 10) * 100}%` }}
+                        />
+                      </div>
+                      <span className="w-5 font-medium text-right shrink-0">{getProductScores(product.id).speed}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-12 shrink-0">安全质量</span>
+                      <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-purple-400 rounded-full" 
+                          style={{ width: `${(Number(getProductScores(product.id).security) / 10) * 100}%` }}
+                        />
+                      </div>
+                      <span className="w-5 font-medium text-right shrink-0">{getProductScores(product.id).security}</span>
+                    </div>
                   </div>
-                  {product.url && product.url.startsWith('http') && (
-                    <a href={product.url} target="_blank" rel="noopener noreferrer">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-[#4d67ff] hover:text-[#3a4fcc] hover:bg-[#4d67ff]/10"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5 mr-1" />
-                        访问
-                      </Button>
-                    </a>
-                  )}
+                  
+                  {/* Recommendation Index */}
+                  <div className="flex flex-col items-center justify-center p-2 bg-gradient-to-br from-[#4d67ff]/5 to-[#4d67ff]/10 rounded-xl min-w-[70px] shrink-0">
+                    <span className="text-xs text-[#666666] mb-0.5 scale-90">推荐指数</span>
+                    <span className="text-xl font-bold text-[#4d67ff] leading-none">
+                      {getProductScores(product.id).recommendation}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -163,9 +175,9 @@ export default function FeaturedProducts() {
             size="lg"
             variant="outline"
             className="rounded-full px-8 border-[#4d67ff] text-[#4d67ff] hover:bg-[#4d67ff] hover:text-white transition-all"
-            onClick={() => navigate('/ecosystem')}
+            onClick={() => window.open('https://github.com/openclawhere/openclawhere.github.io/issues', '_blank')}
           >
-            查看全部 31 个龙虾产品
+            没有找到？提交新的产品
           </Button>
         </div>
       </div>

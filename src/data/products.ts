@@ -17,15 +17,12 @@ export interface Product {
   members?: string;
   skills?: string;
   image?: string;
-  isDomestic: boolean;
   tags: string[];
 }
 
 export const categories = [
   { id: 'open-source', name: '开源产品', count: 7, icon: '🦞', image: '/category-bionic-pet.png' },
   { id: 'cloud', name: '云端产品', count: 8, icon: '☁️', image: '/category-robot-dog.png' },
-  { id: 'community', name: '社区网站', count: 8, icon: '👥', image: '/category-desktop-companion.png' },
-  { id: 'ecosystem', name: '生态工具', count: 8, icon: '🔧', image: '/category-education-robot.png' },
 ];
 
 export const tagFilters = [
@@ -43,8 +40,8 @@ export const statusFilters = [
   { id: 'beta', name: 'Beta / 内测' },
 ];
 
-export const products: Product[] = [
-  // ========== 开源产品 (7) ==========
+// 开源产品
+export const openSourceProducts: Product[] = [
   {
     id: 'openclaw-original',
     name: 'OpenClaw',
@@ -52,11 +49,11 @@ export const products: Product[] = [
     category: 'open-source',
     categoryName: '开源产品',
     description: '原始开源 AI 助手框架，社区核心项目',
-    url: 'https://github.com/openclaw/openclaw',
-    language: 'TypeScript/Node.js',
+    url: 'https://docs.openclaw.ai/zh-CN',
+    language: 'Node.js',
     stars: '215K+',
-    isDomestic: false,
-    tags: ['typescript'],
+    image: './product/openclaw-original.webp',
+    tags: ['Node.js', '开源'],
   },
   {
     id: 'zeroclaw',
@@ -65,11 +62,11 @@ export const products: Product[] = [
     category: 'open-source',
     categoryName: '开源产品',
     description: '社区驱动的 Rust 重写版，内存减少 99%',
-    url: 'https://github.com/zeroclaw/zeroclaw',
+    url: 'https://www.zeroclawlabs.ai/',
     language: 'Rust',
     stars: '17K+',
     features: '3.4MB 二进制, <5MB 内存, 10ms 冷启动',
-    isDomestic: false,
+    image: './product/zeroclaw.webp',
     tags: ['rust'],
   },
   {
@@ -79,11 +76,11 @@ export const products: Product[] = [
     category: 'open-source',
     categoryName: '开源产品',
     description: '面向 IoT 和嵌入式设备的 Go 版本',
-    url: 'https://github.com/sipeed/picoclaw',
+    url: 'https://picoclaw.io/',
     language: 'Go',
     stars: '12K+',
     features: '<10MB 二进制, <10MB 内存, 亚秒级启动',
-    isDomestic: false,
+    image: './product/picoclaw.webp',
     tags: ['go'],
   },
   {
@@ -96,7 +93,7 @@ export const products: Product[] = [
     url: 'https://autoglm.zhipuai.cn/autoclaw/',
     language: 'TypeScript',
     features: '预置 50+ 技能，支持多模型',
-    isDomestic: true,
+    image: './product/autoclaw.webp',
     tags: ['typescript', 'multi-model', 'chinese'],
   },
   {
@@ -106,10 +103,10 @@ export const products: Product[] = [
     category: 'open-source',
     categoryName: '开源产品',
     description: '腾讯推出的微信深度整合版本',
-    url: 'https://claw.guanjia.qq.com',
+    url: 'https://qclaw.qq.com/',
     status: '内测中',
     features: '微信远程控制电脑',
-    isDomestic: true,
+    image: './product/qclaw.webp',
     tags: ['chinese'],
   },
   {
@@ -119,27 +116,29 @@ export const products: Product[] = [
     category: 'open-source',
     categoryName: '开源产品',
     description: '网易有道推出的 OpenClaw 衍生版本',
-    url: 'https://github.com/netease-youdao/lobsterai',
+    url: 'https://lobsterai.youdao.com/#/index',
     license: 'MIT 协议',
     releaseDate: '2026 年 2 月 11 日',
-    isDomestic: true,
+    image: './product/lobsterai.webp',
     tags: ['chinese'],
   },
-  {
-    id: 'ui-tars-desktop',
-    name: 'UI-TARS Desktop',
-    company: 'UI-TARS',
-    category: 'open-source',
-    categoryName: '开源产品',
-    description: '基于自研 Seed-VL 多模态大模型的视觉操作版本',
-    url: 'https://github.com/ui-tars/ui-tars-desktop',
-    releaseDate: '2026 年 2 月',
-    features: '纯视觉识别操作任意软件界面',
-    isDomestic: false,
-    tags: ['multi-model'],
-  },
+  // {
+  //   id: 'ui-tars-desktop',
+  //   name: 'UI-TARS Desktop',
+  //   company: 'UI-TARS',
+  //   category: 'open-source',
+  //   categoryName: '开源产品',
+  //   description: '基于自研 Seed-VL 多模态大模型的视觉操作版本',
+  //   url: 'https://github.com/ui-tars/ui-tars-desktop',
+  //   releaseDate: '2026 年 2 月',
+  //   features: '纯视觉识别操作任意软件界面',
+  //   isDomestic: false,
+  //   tags: ['multi-model'],
+  // },
+]
 
-  // ========== 云端产品 (8) ==========
+// 云端产品
+export const cloudProducts: Product[] = [
   {
     id: 'maxclaw',
     name: 'MaxClaw',
@@ -147,11 +146,11 @@ export const products: Product[] = [
     category: 'cloud',
     categoryName: '云端产品',
     description: 'MiniMax 官方云端托管版本',
-    url: 'https://agent.minimaxi.com/max-claw',
+    url: 'https://agent.minimax.io/max-claw',
     model: 'MiniMax M2.5',
     pricing: '积分制，月成本 9.9-50 元',
     features: '零部署，开箱即用',
-    isDomestic: true,
+    image: './product/maxclaw.webp',
     tags: ['cloud-hosted', 'chinese'],
   },
   {
@@ -161,10 +160,10 @@ export const products: Product[] = [
     category: 'cloud',
     categoryName: '云端产品',
     description: 'Kimi 官方内置的 OpenClaw 版本',
-    url: 'https://kimi.com',
+    url: 'https://www.kimi.com/bot',
     model: 'Kimi K2.5',
     features: '40GB 云存储，支持 RAG',
-    isDomestic: true,
+    image: './product/kimiclaw.webp',
     tags: ['cloud-hosted', 'chinese'],
   },
   {
@@ -177,7 +176,7 @@ export const products: Product[] = [
     url: 'https://www.volcengine.com/experience/ark?mode=claw',
     pricing: 'Coding Plan Pro 用户免费，Lite 用户 7 天免费试用',
     features: '云端托管，7×24 小时在线',
-    isDomestic: true,
+    image: './product/arkclaw.webp',
     tags: ['cloud-hosted', 'chinese'],
   },
   {
@@ -187,10 +186,10 @@ export const products: Product[] = [
     category: 'cloud',
     categoryName: '云端产品',
     description: '腾讯全场景 AI 智能体',
-    url: 'https://workbuddy.qq.com',
+    url: 'https://www.codebuddy.cn/work/',
     releaseDate: '2026 年 3 月 9 日',
     features: '兼容 OpenClaw 技能，支持企业微信、飞书、钉钉、QQ',
-    isDomestic: true,
+    image: './product/workbuddy.webp',
     tags: ['cloud-hosted', 'multi-model', 'chinese'],
   },
   {
@@ -200,25 +199,25 @@ export const products: Product[] = [
     category: 'cloud',
     categoryName: '云端产品',
     description: '阿里云企业级混合部署方案',
-    url: 'https://www.aliyun.com/activity/ecs/clawdbot',
+    url: 'https://copaw.agentscope.io/',
     pricing: '轻量应用服务器 5.7 元/月起',
     features: '本地 + 云端混合部署，支持私有化',
-    isDomestic: true,
+    image: './product/copaw.webp',
     tags: ['cloud-hosted', 'chinese'],
   },
-  {
-    id: 'xiaoyi-claw',
-    name: '小艺 Claw',
-    company: '华为',
-    category: 'cloud',
-    categoryName: '云端产品',
-    description: '华为鸿蒙生态深度集成版本',
-    url: '通过华为小艺 App 使用',
-    status: 'Beta 公测',
-    features: '鸿蒙分布式能力，多设备协同',
-    isDomestic: true,
-    tags: ['cloud-hosted', 'chinese'],
-  },
+  // {
+  //   id: 'xiaoyi-claw',
+  //   name: '小艺 Claw',
+  //   company: '华为',
+  //   category: 'cloud',
+  //   categoryName: '云端产品',
+  //   description: '华为鸿蒙生态深度集成版本',
+  //   url: '通过华为小艺 App 使用',
+  //   status: 'Beta 公测',
+  //   features: '鸿蒙分布式能力，多设备协同',
+  //   isDomestic: true,
+  //   tags: ['cloud-hosted', 'chinese'],
+  // },
   {
     id: 'jvs-claw',
     name: 'JVS Claw',
@@ -226,9 +225,9 @@ export const products: Product[] = [
     category: 'cloud',
     categoryName: '云端产品',
     description: '集成 Clawbot 与云端独立环境 ClawSpace 的产品',
-    url: 'https://jvs-claw.com',
+    url: 'https://jvs.wuying.aliyun.com/',
     features: '隔离安全的云端环境操作',
-    isDomestic: false,
+    image: './product/jvs-claw.webp',
     tags: ['cloud-hosted'],
   },
   {
@@ -238,13 +237,15 @@ export const products: Product[] = [
     category: 'cloud',
     categoryName: '云端产品',
     description: 'Kilo Code 推出的全托管云服务',
-    url: 'https://aitoolly.com/zh/product/kiloclaw',
+    url: 'https://kilo.ai/kiloclaw',
     features: '一键式 OpenClaw 云端平台',
-    isDomestic: false,
+    image: '/product/kiloclaw.webp',
     tags: ['cloud-hosted'],
   },
+]
 
-  // ========== 社区网站 (8) ==========
+// 社区网站
+export const communityProducts: Product[] = [
   {
     id: 'openclaw-cn',
     name: 'OpenClaw 中文社区',
@@ -256,7 +257,6 @@ export const products: Product[] = [
     members: '5000+',
     skills: '120+ 中文技能',
     features: '日活 1200+',
-    isDomestic: true,
     tags: ['chinese'],
   },
   {
@@ -268,7 +268,6 @@ export const products: Product[] = [
     description: 'OpenClaw 中文社区分支，完全开源免费',
     url: 'https://clawd.org.cn/',
     features: '论坛讨论，开源免费',
-    isDomestic: true,
     tags: ['chinese'],
   },
   {
@@ -280,7 +279,6 @@ export const products: Product[] = [
     description: '官方 Discord 社区，最活跃的交流平台',
     url: 'https://discord.gg/clawd',
     features: '实时讨论、玩法分享、Bug 求助',
-    isDomestic: false,
     tags: [],
   },
   {
@@ -292,7 +290,6 @@ export const products: Product[] = [
     description: '官方 GitHub 技术讨论区',
     url: 'https://github.com/openclaw/openclaw/discussions',
     features: '功能建议、Issue 追踪',
-    isDomestic: false,
     tags: [],
   },
   {
@@ -304,7 +301,6 @@ export const products: Product[] = [
     description: '官方 Twitter 账号，新功能发布和用户成果分享',
     url: 'https://x.com/openclaw',
     features: '新功能发布、用户成果分享',
-    isDomestic: false,
     tags: [],
   },
   {
@@ -315,7 +311,6 @@ export const products: Product[] = [
     categoryName: '社区网站',
     description: '独立社区资源网站，提供教程和指南',
     url: 'https://open-claw.me/zh/about',
-    isDomestic: false,
     tags: ['chinese'],
   },
   {
@@ -326,7 +321,6 @@ export const products: Product[] = [
     categoryName: '社区网站',
     description: 'OpenClaw 生态资源汇总',
     url: 'https://github.com/vincentkoc/awesome-openclaw',
-    isDomestic: false,
     tags: [],
   },
   {
@@ -337,11 +331,12 @@ export const products: Product[] = [
     categoryName: '社区网站',
     description: '社区共享和发现优化的 OpenClaw 配置',
     url: 'https://github.com/memepilot/clawlodge',
-    isDomestic: false,
     tags: [],
   },
+]
 
-  // ========== 生态工具 (8) ==========
+// 生态工具
+export const ecosystemProducts: Product[] = [
   {
     id: 'clawhub',
     name: 'ClawHub 官方技能市场',
@@ -351,7 +346,6 @@ export const products: Product[] = [
     description: '官方技能注册中心，类似 npm 之于 Node.js',
     url: 'https://clawhub.ai/',
     skills: '19000+',
-    isDomestic: false,
     tags: ['skills-market'],
   },
   {
@@ -362,7 +356,6 @@ export const products: Product[] = [
     categoryName: '生态工具',
     description: '官方技能 GitHub 仓库',
     url: 'https://github.com/openclaw/skills',
-    isDomestic: false,
     tags: ['skills-market'],
   },
   {
@@ -373,7 +366,6 @@ export const products: Product[] = [
     categoryName: '生态工具',
     description: '安全过滤器，适配生产环境',
     url: 'https://openclawskills.best',
-    isDomestic: false,
     tags: ['skills-market'],
   },
   {
@@ -385,7 +377,6 @@ export const products: Product[] = [
     description: '精选技能市场，官方技能 51+，安装 6.4K+',
     url: 'https://skills.sh',
     skills: '51+',
-    isDomestic: false,
     tags: ['skills-market'],
   },
   {
@@ -396,7 +387,6 @@ export const products: Product[] = [
     categoryName: '生态工具',
     description: '精选垂类技能平台',
     url: 'https://lobehub.com',
-    isDomestic: false,
     tags: ['skills-market'],
   },
   {
@@ -407,7 +397,6 @@ export const products: Product[] = [
     categoryName: '生态工具',
     description: '精选垂类技能平台',
     url: 'https://voltagent.com',
-    isDomestic: false,
     tags: ['skills-market'],
   },
   {
@@ -418,7 +407,6 @@ export const products: Product[] = [
     categoryName: '生态工具',
     description: 'OpenClaw 代理职业声誉和劳动市场',
     url: 'https://clawsphere.io',
-    isDomestic: false,
     tags: [],
   },
   {
@@ -429,30 +417,13 @@ export const products: Product[] = [
     categoryName: '生态工具',
     description: '用户自发布技能，经过真实 Agent 环境测试',
     url: 'http://clwd.org.cn/skills',
-    isDomestic: true,
     tags: ['skills-market', 'chinese'],
   },
+]
+
+export const products: Product[] = [
+  ...openSourceProducts,
+  ...cloudProducts,
 ];
 
-// Featured products (top picks from each category)
-export const featuredProducts = [
-  products.find(p => p.id === 'openclaw-original')!,
-  products.find(p => p.id === 'zeroclaw')!,
-  products.find(p => p.id === 'autoclaw')!,
-  products.find(p => p.id === 'maxclaw')!,
-  products.find(p => p.id === 'kimiclaw')!,
-  products.find(p => p.id === 'clawhub')!,
-];
-
-// Helper functions
-export const getProductsByCategory = (categoryId: string) => {
-  return products.filter(p => p.category === categoryId);
-};
-
-export const getDomesticProducts = () => {
-  return products.filter(p => p.isDomestic);
-};
-
-export const getInternationalProducts = () => {
-  return products.filter(p => !p.isDomestic);
-};
+export const featuredProducts = products

@@ -176,7 +176,7 @@ export default function Hero() {
                 size="lg"
                 variant="outline"
                 className="rounded-full px-8 py-6 text-base border-[#cccccc] text-[#666666] hover:bg-white hover:border-[#4d67ff] hover:text-[#4d67ff] transition-all"
-                onClick={() => navigate('/ecosystem')}
+                onClick={() => navigate('/products')}
               >
                 <Play className="w-5 h-5 mr-2" />
                 智能选虾

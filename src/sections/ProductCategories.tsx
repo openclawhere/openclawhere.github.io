@@ -41,7 +41,7 @@ export default function ProductCategories() {
               onMouseLeave={() => setHoveredCard(null)}
             >
               <div
-                className={`relative aspect-square rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 ${hoveredCard === category.id ? 'scale-[1.03] shadow-2xl' : 'shadow-lg'
+                className={`relative aspect-video rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 transform-gpu isolate ${hoveredCard === category.id ? 'scale-[1.03] shadow-2xl' : 'shadow-lg'
                   }`}
                 onClick={() => goToGuide(category.id)}
               >
