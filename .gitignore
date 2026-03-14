@@ -6,3 +6,10 @@ script
 .DS_Store
 .psd
 .tk
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
