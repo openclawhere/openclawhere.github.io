@@ -101,14 +101,14 @@ export function ModelCard({ model }: ModelCardProps) {
       {/* Tags Section */}
       <div className="p-6 pt-4 mt-auto">
         <div className="flex flex-wrap gap-1.5">
-          {model.tags.map((tag, index) => {
+          {model.tags.map((tag) => {
             // Determine icon and color based on tag content
             const isPerf = tag.includes('推理') || tag.includes('速度');
             const Icon = isPerf ? Zap : Database;
             const bgClass = isPerf ? 'bg-amber-50 text-amber-600 border-amber-100' : 'bg-blue-50/50 text-[#4d67ff] border-blue-100';
             
             return (
-              <span key={index} className={`px-2.5 py-1 text-xs rounded-md border flex items-center gap-1 font-medium transition-colors ${bgClass}`}>
+              <span key={tag} className={`px-2.5 py-1 text-xs rounded-md border flex items-center gap-1 font-medium transition-colors ${bgClass}`}>
                 {isPerf && <Icon className="w-3 h-3" />}
                 {tag}
               </span>
