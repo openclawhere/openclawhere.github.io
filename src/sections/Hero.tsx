@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useDocumentMeta } from '@/hooks/use-document-meta';
 
@@ -20,7 +19,6 @@ export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const navigate = useNavigate();
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -121,14 +119,14 @@ export default function Hero() {
             {/* Title */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#333333] leading-tight animate-slide-up">
               OpenClaw Here!
-              <span className="block text-gradient mt-2">全民养虾, 一站到底</span>
+              <span className="block text-gradient mt-2">拥抱 AI，全民养虾</span>
             </h1>
 
             {/* Description */}
             <p className="text-lg text-[#666666] max-w-xl mx-auto lg:mx-0 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-              汇聚 OpenClaw 生态产品、云端服务、技能社区和学习资料，
+              汇聚 OpenClaw 龙虾生态产品和社区资源，免费引导，科学养虾
               <br />
-              一站式解决养虾难题，让人人都能轻松养虾，快乐养虾！
+              劝退式教学，让韭菜早日失败，让头铁早日成功
             </p>
 
             {/* Stats */}
@@ -167,12 +165,17 @@ export default function Hero() {
               <Button
                 size="lg"
                 className="bg-[#4d67ff] hover:bg-[#3a4fcc] text-white rounded-full px-8 py-6 text-base shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 group"
-                onClick={() => navigate('/products')}
+                onClick={() => {
+                  const warningGuide = document.getElementById('warning-guide');
+                  if (warningGuide) {
+                    warningGuide.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }}
               >
-                选择适合你的龙虾产品
+                一键成功
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button
+              {/* <Button
                 size="lg"
                 variant="outline"
                 className="rounded-full px-8 py-6 text-base border-[#cccccc] text-[#666666] hover:bg-white hover:border-[#4d67ff] hover:text-[#4d67ff] transition-all"
@@ -180,7 +183,7 @@ export default function Hero() {
               >
                 <Play className="w-5 h-5 mr-2" />
                 免费资料
-              </Button>
+              </Button> */}
             </div>
           </div>
 

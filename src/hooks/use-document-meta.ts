@@ -5,7 +5,7 @@ interface SEOProps {
   description?: string;
 }
 
-const DEFAULT_TITLE = 'OpenClaw 龙虾圈 - 全民养虾，一站到底';
+const DEFAULT_TITLE = 'OpenClaw 龙虾圈 - 全民养虾，一站劝退';
 const DEFAULT_DESCRIPTION =
   '一站式开源龙虾养殖平台，汇聚生态产品、云端服务、技能社区和学习资料，让人人都能轻松养虾，快乐养虾！';
 

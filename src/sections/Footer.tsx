@@ -35,7 +35,7 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <p className="text-gray-400 text-sm">
-              © 2026 OpenClaw龙虾圈. All rights reserved.
+              © 2026 OpenClaw龙虾圈. Build By <a className='text-gray-400 hover:text-white transition-colors' href="https://antigravity.google/">Antigravity</a> and <a className='text-gray-400 hover:text-white transition-colors' href="https://lingma.aliyun.com/">Lingma IDE</a>, All rights reserved.
             </p>
             <div className="flex items-center gap-4">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">

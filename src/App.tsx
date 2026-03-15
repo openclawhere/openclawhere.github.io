@@ -1,6 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
 import Navigation from './sections/Navigation';
 import Hero from './sections/Hero';
+import WarningGuide from './sections/WarningGuide';
+import SelectionGuide from './sections/SelectionGuide';
+import ConfigurationGuide from './sections/ConfigurationGuide';
+import SkillGuide from './sections/SkillGuide';
 import ModelsPage from './sections/ModelsPage';
 import FeaturedProducts from './sections/FeaturedProducts';
 import ProductGuide from './sections/ProductGuide';
@@ -9,13 +13,17 @@ import MarketTrends from './sections/MarketTrends';
 // import Testimonials from './sections/Testimonials';
 import Footer from './sections/Footer';
 
-// 首页：Hero + TechFeatures + Testimonials
+// 首页：Hero + 4 个 Guide 组件
 function HomePage() {
   return (
     <>
       <Hero />
-      {/* <TechFeatures /> */}
-      {/* <Testimonials /> */}
+      <WarningGuide />
+      <SelectionGuide />
+      <ConfigurationGuide />
+      <SkillGuide />
+      {/* <TechFeatures />
+      <Testimonials /> */}
     </>
   );
 }
