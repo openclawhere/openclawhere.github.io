@@ -167,19 +167,19 @@ export default function Hero() {
               <Button
                 size="lg"
                 className="bg-[#4d67ff] hover:bg-[#3a4fcc] text-white rounded-full px-8 py-6 text-base shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 group"
-                onClick={() => navigate('/resources')}
+                onClick={() => navigate('/products')}
               >
-                开启免费养虾
+                选择适合你的龙虾产品
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button
                 size="lg"
                 variant="outline"
                 className="rounded-full px-8 py-6 text-base border-[#cccccc] text-[#666666] hover:bg-white hover:border-[#4d67ff] hover:text-[#4d67ff] transition-all"
-                onClick={() => navigate('/products')}
+                onClick={() => navigate('/resources')}
               >
                 <Play className="w-5 h-5 mr-2" />
-                智能选虾
+                免费资料
               </Button>
             </div>
           </div>

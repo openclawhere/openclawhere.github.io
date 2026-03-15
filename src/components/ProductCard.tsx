@@ -19,7 +19,7 @@ export function ProductCard({
   onHoverChange 
 }: ProductCardProps) {
   const isHovered = hoveredProduct === product.id;
-  const scores = getProductScores(product.id);
+  const scores = getProductScores(product);
 
   // Guide variant with list mode support
   if (variant === 'guide') {
@@ -34,10 +34,10 @@ export function ProductCard({
           </div>
         ) : (
           <div className={`${viewMode === 'list' ? 'w-[200px] sm:w-[240px] shrink-0 aspect-video rounded-xl overflow-hidden relative bg-gradient-to-br from-[#4d67ff]/10 via-[#6b82ff]/5 to-[#f8f9ff] flex items-center justify-center text-5xl hidden sm:flex' : 'w-full aspect-video overflow-hidden relative bg-gradient-to-br from-[#4d67ff]/10 via-[#6b82ff]/5 to-[#f8f9ff] flex items-center justify-center text-6xl'} transition-transform duration-500 group-hover:scale-105 transform-gpu`}>
-            {product.category === 'open-source' && '🦞'}
-            {product.category === 'cloud' && '☁️'}
-            {product.category === 'community' && '👥'}
-            {product.category === 'ecosystem' && '🔧'}
+            {product.category.includes('开源项目') && '🦞'}
+            {product.category.includes('云产品') && '☁️'}
+            {product.category.includes('社区网站') && '👥'}
+            {product.category.includes('生态工具') && '🔧'}
           </div>
         )}
 
@@ -71,15 +71,17 @@ export function ProductCard({
             </div>
 
             {/* Tags */}
-            <div className="flex flex-wrap gap-2 mb-3">
-              <Badge variant="outline" className="bg-gray-50 text-[#666666] border-gray-200 text-[10px] px-1.5 py-0">
-                {product.categoryName}
-              </Badge>
-              {product.language && (
-                <span className="px-1.5 py-0.5 text-[10px] font-medium rounded-full bg-[#4d67ff]/10 text-[#4d67ff]">
-                  {product.language}
+            <div className="flex flex-wrap items-center gap-2 mb-3">
+              {product.category.map((cat, index) => (
+                <Badge key={index} variant="outline" className="bg-gray-50 text-[#666666] border-gray-200 text-[10px] px-1.5 py-0 whitespace-nowrap">
+                  {cat}
+                </Badge>
+              ))}
+              {product.tags.slice(0, 3).map((tag, index) => (
+                <span key={index} className="px-1.5 py-0.5 text-[10px] font-medium rounded-full bg-[#4d67ff]/10 text-[#4d67ff] whitespace-nowrap">
+                  {tag}
                 </span>
-              )}
+              ))}
               {product.status && (
                 <span className="px-1.5 py-0.5 text-[10px] font-medium rounded-full bg-orange-50 text-orange-600">
                   {product.status}
@@ -178,10 +180,10 @@ export function ProductCard({
           />
         ) : (
           <div className={`text-6xl transition-transform duration-500 ${isHovered ? 'scale-125' : 'scale-100'}`}>
-            {product.category === 'open-source' && '🦞'}
-            {product.category === 'cloud' && '☁️'}
-            {product.category === 'community' && '👥'}
-            {product.category === 'ecosystem' && '🔧'}
+            {product.category.includes('开源项目') && '🦞'}
+            {product.category.includes('云产品') && '☁️'}
+            {product.category.includes('社区网站') && '👥'}
+            {product.category.includes('生态工具') && '🔧'}
           </div>
         )}
         
@@ -202,25 +204,22 @@ export function ProductCard({
           </a>
         )}
 
-        {/* Category Badge */}
-        <div className="absolute top-4 left-4 flex flex-col gap-2">
-          <Badge variant="outline" className="bg-white/90 text-[#333333] border-0">
-            {product.categoryName}
-          </Badge>
+        {/* Category Badges */}
+        <div className="absolute top-4 left-4 flex items-center gap-2">
+          {product.category.slice(0, 2).map((cat, index) => (
+            <Badge key={index} variant="outline" className="bg-white/90 text-[#333333] border-0 whitespace-nowrap">
+              {cat}
+            </Badge>
+          ))}
         </div>
 
         {/* Tags */}
-        <div className="absolute bottom-4 left-4 flex flex-wrap gap-2 pr-4">
-          {product.language && (
-            <span className="px-2 py-1 text-xs rounded-full bg-white/80 backdrop-blur-md text-[#4d67ff] font-medium shadow-sm">
-              {product.language}
+        <div className="absolute bottom-4 left-4 flex flex-wrap gap-2 pr-4 max-w-[calc(100%-2rem)]">
+          {product.tags.slice(0, 3).map((tag, index) => (
+            <span key={index} className="px-2 py-1 text-xs rounded-full bg-white/80 backdrop-blur-md text-[#4d67ff] font-medium shadow-sm whitespace-nowrap">
+              {tag}
             </span>
-          )}
-          {product.features && (
-            <span className="px-2 py-1 text-xs rounded-full bg-white/60 backdrop-blur-md text-[#666666] line-clamp-1 shadow-sm">
-              {product.features}
-            </span>
-          )}
+          ))}
         </div>
       </div>
 

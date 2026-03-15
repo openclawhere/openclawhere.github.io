@@ -51,7 +51,9 @@ export default function ProductGuide() {
 
     // Category filter
     if (selectedCategories.length > 0) {
-      result = result.filter(p => selectedCategories.includes(p.category));
+      result = result.filter(p => 
+        selectedCategories.some(cat => p.category.includes(cat))
+      );
     }
 
     // Tag filter
@@ -74,9 +76,9 @@ export default function ProductGuide() {
     result.sort((a, b) => {
       switch (sortBy) {
         case 'stars': {
-          const aStars = parseInt((a.stars || '0').replace(/[^0-9]/g, '')) || 0;
-          const bStars = parseInt((b.stars || '0').replace(/[^0-9]/g, '')) || 0;
-          return bStars - aStars;
+          // Stars is now an object, not suitable for sorting
+          // Can be implemented later if needed based on recommendation score
+          return 0;
         }
         case 'name':
         default:

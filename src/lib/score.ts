@@ -1,26 +1,27 @@
-export function getProductScores(id: string) {
-  let hash = 0;
-  for (let i = 0; i < id.length; i++) {
-    hash = (hash << 5) - hash + id.charCodeAt(i);
-    hash |= 0;
-  }
+import type { Product } from '@/data/products';
+
+export function getProductScores(product?: Product) {
+  // Use product's actual stars data if available, otherwise use defaults
+  const defaultStars = {
+    difficulty: 7.0,
+    customizability: 7.0,
+    speed: 7.0,
+    security: 7.0
+  };
   
-  const absHash = Math.abs(hash);
+  // Merge with defaults to handle partial or missing stars
+  const stars = {
+    ...defaultStars,
+    ...(product?.stars || {})
+  };
   
-  // Generate scores between 7.0 and 9.9 (10-point scale)
-  const difficulty = 7.0 + ((absHash % 30) / 10); 
-  const customizability = 7.0 + (((absHash >> 2) % 30) / 10);
-  const speed = 7.0 + (((absHash >> 4) % 30) / 10);
-  const security = 7.0 + (((absHash >> 6) % 30) / 10);
-  
-  // Average recommendation index
-  const recommendIndex = ((difficulty + customizability + speed + security) / 4).toFixed(1);
+  const recommendIndex = ((stars.difficulty + stars.customizability + stars.speed + stars.security) / 4).toFixed(1);
   
   return {
-    difficulty: difficulty.toFixed(1),
-    customizability: customizability.toFixed(1),
-    speed: speed.toFixed(1),
-    security: security.toFixed(1),
+    difficulty: stars.difficulty.toFixed(1),
+    customizability: stars.customizability.toFixed(1),
+    speed: stars.speed.toFixed(1),
+    security: stars.security.toFixed(1),
     recommendation: recommendIndex
   };
 }
