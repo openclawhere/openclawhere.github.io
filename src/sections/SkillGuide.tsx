@@ -42,7 +42,7 @@ export default function SkillGuide() {
             <span>实战演练</span>
           </div>
           <h2 className="text-4xl lg:text-6xl font-black text-[#333333] mb-6">
-            第3步<span className="text-gradient text-purple-500">练技能</span>
+            第3步：<span className="text-gradient text-purple-500">练技能</span>
           </h2>
           <p className="text-xl text-[#666666] max-w-3xl mx-auto leading-relaxed">
             装技能、跑流程，打造你的专属 AI 助手，让龙虾帮你自动干活

@@ -45,7 +45,7 @@ export default function SelectionGuide() {
             第1步：<span className="text-gradient text-blue-500">选龙虾</span>
           </h2>
           <p className="text-xl text-[#666666] max-w-3xl mx-auto leading-relaxed">
-            龙虾产品丰富，从入门款到专业款都有 <br/>根据自己的需求和能力，选择合适的即可，别越级硬上
+            龙虾产品丰富，从入门款到专业款都有， <br/>根据自己的需求和能力，选择合适的即可，别越级硬上
           </p>
         </div>
 

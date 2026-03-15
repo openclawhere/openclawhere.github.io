@@ -124,7 +124,7 @@ export default function Hero() {
 
             {/* Description */}
             <p className="text-lg text-[#666666] max-w-xl mx-auto lg:mx-0 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-              汇聚 OpenClaw 龙虾生态产品和社区资源，免费引导，科学养虾
+              汇聚 OpenClaw 龙虾生态产品和社区资源，免费引导，科学养虾，
               <br />
               劝退式教学，让韭菜早日失败，让头铁早日成功
             </p>

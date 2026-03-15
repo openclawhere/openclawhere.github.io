@@ -46,7 +46,7 @@ export default function ConfigurationGuide() {
             <span>经济实惠</span>
           </div>
           <h2 className="text-4xl lg:text-6xl font-black text-[#333333] mb-6">
-            第2步<span className="text-gradient text-amber-500">选饲料</span>
+            第2步：<span className="text-gradient text-amber-500">选饲料</span>
           </h2>
           <p className="text-xl text-[#666666] max-w-3xl mx-auto leading-relaxed">
             龙虾要吃饲料（Token），选对模型，别乱烧钱<br/>合理配置本地或云端大语言模型，让龙虾更聪明
