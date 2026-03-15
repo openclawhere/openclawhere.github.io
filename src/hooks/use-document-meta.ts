@@ -5,9 +5,9 @@ interface SEOProps {
   description?: string;
 }
 
-const DEFAULT_TITLE = 'OpenClaw 龙虾圈 - 全民养虾，一站劝退';
+const DEFAULT_TITLE = 'OpenClaw 龙虾圈 - AI 智能体平台 | 开源龙虾养殖生态系统';
 const DEFAULT_DESCRIPTION =
-  '一站式开源龙虾养殖平台，汇聚生态产品、云端服务、技能社区和学习资料，让人人都能轻松养虾，快乐养虾！';
+  'OpenClaw 龙虾圈是一站式开源 AI 智能体平台，汇聚 OpenClaw、ZeroClaw、AutoClaw 等 31+ 生态产品，提供云端服务、技能社区和学习资料，让人人都能轻松部署 AI 智能体！';
 
 /**
  * Dynamically updates document title and meta description for SEO.

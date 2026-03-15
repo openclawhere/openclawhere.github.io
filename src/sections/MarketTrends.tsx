@@ -67,8 +67,8 @@ const stats = [
 
 export default function MarketTrends() {
   useDocumentMeta({
-    title: '养虾学堂',
-    description: '汇总全网养虾资料，精选优质教程，从小白到大师，不花钱也能养好虾，打破信息差，杜绝智商税！',
+    title: '养虾学堂 - AI 智能体学习资源',
+    description: '汇总全网 AI 智能体学习资料，精选优质教程，从小白到大师，免费引导科学部署，打破信息差，杜绝智商税！',
   });
   const [animatedStats, setAnimatedStats] = useState<number[]>(stats.map(() => 0));
   const sectionRef = useRef<HTMLDivElement>(null);

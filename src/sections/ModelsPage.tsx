@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/button';
 
 export default function ModelsPage() {
   useDocumentMeta({
-    title: '模型分类',
-    description: '整理了市面上主流的适配龙虾的开源模型服务，按需选用，为你的龙虾注入灵魂。',
+    title: '模型分类 - AI 大模型服务',
+    description: '整理了市面上主流的适配 OpenClaw 的开源模型服务，包括 GPT-4、Claude、Gemini、通义千问等，按需选用，为你的 AI 智能体注入灵魂。',
   });
 
   return (

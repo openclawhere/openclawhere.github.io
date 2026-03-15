@@ -4,6 +4,11 @@
 User-agent: *
 Allow: /
 Disallow: /assets/
+Disallow: /node_modules/
+Disallow: /*.map$
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1
 
 # Sitemaps
 Sitemap: https://openclawhere.github.io/sitemap.xml
@@ -11,7 +16,21 @@ Sitemap: https://openclawhere.github.io/sitemap.xml
 # Baidu Spider
 User-agent: Baiduspider
 Allow: /
+Crawl-delay: 2
 
 # Google Bot
 User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+# Bing Bot
+User-agent: Bingbot
+Allow: /
+
+# DuckDuckGo Bot
+User-agent: DuckDuckBot
+Allow: /
+
+# Yandex Bot
+User-agent: YandexBot
 Allow: /

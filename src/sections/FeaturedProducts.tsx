@@ -6,8 +6,8 @@ import { useDocumentMeta } from '@/hooks/use-document-meta';
 
 export default function FeaturedProducts() {
   useDocumentMeta({
-    title: '龙虾产品大全',
-    description: '基于 OpenClaw 生态的热门开源项目和产品服务，选择最适合你的龙虾产品。',
+    title: '龙虾产品大全 - AI 智能体产品推荐',
+    description: '基于 OpenClaw 生态的热门开源项目和产品服务，包括 OpenClaw、ZeroClaw、AutoClaw 等，选择最适合你的 AI 智能体解决方案。',
   });
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
 

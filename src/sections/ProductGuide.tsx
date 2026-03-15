@@ -9,8 +9,8 @@ import { WebsiteCard } from '@/components/WebsiteCard';
 
 export default function ProductGuide() {
   useDocumentMeta({
-    title: '探索 OpenClaw 生态',
-    description: '从开源项目到云端服务，从社区网站到技能市场，一站式发现 OpenClaw 生态全景，智能筛选龙虾产品。',
+    title: '探索 OpenClaw 生态 - 31+ AI 智能体产品',
+    description: '从开源项目到云端服务，从社区网站到技能市场，一站式发现 OpenClaw 生态全景，智能筛选 AI 智能体产品，找到最适合你的解决方案。',
   });
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);

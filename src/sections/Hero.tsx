@@ -13,8 +13,8 @@ const PARTICLES = Array.from({ length: 20 }, () => ({
 
 export default function Hero() {
   useDocumentMeta({
-    title: '首页',
-    description: 'OpenClaw 龙虾圈，汇聚生态产品、云端服务、技能社区和学习资料，一站式解决养虾难题，让人人都能轻松养虾！',
+    title: '首页 - AI 智能体平台',
+    description: 'OpenClaw 龙虾圈，汇聚 OpenClaw、ZeroClaw、AutoClaw 等 31+ 生态产品与社区资源，免费引导，科学部署 AI 智能体，打造您的私人 AI 助手！',
   });
   const heroRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
