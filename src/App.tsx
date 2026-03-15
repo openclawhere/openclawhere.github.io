@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Navigation from './sections/Navigation';
 import Hero from './sections/Hero';
-import ProductCategories from './sections/ProductCategories';
+import ModelsPage from './sections/ModelsPage';
 import FeaturedProducts from './sections/FeaturedProducts';
 import ProductGuide from './sections/ProductGuide';
 // import TechFeatures from './sections/TechFeatures';
@@ -27,7 +27,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/models" element={<ProductCategories />} />
+          <Route path="/models" element={<ModelsPage />} />
           <Route path="/products" element={<FeaturedProducts />} />
           <Route path="/ecosystem" element={<ProductGuide />} />
           <Route path="/resources" element={<MarketTrends />} />

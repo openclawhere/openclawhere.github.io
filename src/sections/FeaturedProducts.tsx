@@ -40,12 +40,15 @@ export default function FeaturedProducts() {
           ))}
         </div>
 
-        {/* View All Button */}
-        <div className="text-center mt-12">
+        {/* Submit New Product CTA */}
+        <div className="mt-16 text-center border-t border-gray-200/60 pt-16">
+          <h3 className="text-2xl font-bold text-[#333333] mb-3">你发现了优秀的龙虾产品？</h3>
+          <p className="text-[#666666] mb-8 max-w-lg mx-auto">
+            欢迎向我们提交你发现的有趣、有用的龙虾整机或相关开源硬件，一起丰富产品大全。
+          </p>
           <Button
             size="lg"
-            variant="outline"
-            className="rounded-full px-8 border-[#4d67ff] text-[#4d67ff] hover:bg-[#4d67ff] hover:text-white transition-all"
+            className="bg-[#4d67ff] hover:bg-[#3a4fcc] text-white rounded-full px-8 h-12 shadow-[0_8px_30px_rgb(77,103,255,0.3)] hover:shadow-xl transition-all hover:-translate-y-1 font-medium"
             onClick={() => window.open('https://github.com/openclawhere/openclawhere.github.io/issues', '_blank')}
           >
             没有找到？提交新的产品

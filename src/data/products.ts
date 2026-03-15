@@ -23,9 +23,24 @@ export interface Product {
   image?: string;
 }
 
+export interface WebSite {
+  id: string;
+  name: string;
+  category: string[];
+  description: string;
+  url?: string;
+  tags: string[];
+  image?: string;
+}
+
 export const categories = [
   { id: 'open-source', name: '开源产品', count: 7, icon: '🦞', image: '/category-bionic-pet.png' },
   { id: 'cloud', name: '云端产品', count: 8, icon: '☁️', image: '/category-robot-dog.png' },
+];
+
+export const ecosystemCategories = [
+  { id: '社区网站', name: '社区网站', count: 8, icon: '👥', image: '/category-bionic-pet.png' },
+  { id: '生态工具', name: '生态工具', count: 8, icon: '🔧', image: '/category-robot-dog.png' },
 ];
 
 export const tagFilters = [
@@ -43,13 +58,7 @@ export const statusFilters = [
   { id: 'beta', name: 'Beta / 内测' },
 ];
 
-// 默认评分
-const defaultStars = {
-  difficulty: 7.0,
-  customizability: 7.0,
-  speed: 7.0,
-  security: 7.0
-};
+
 
 // 开源产品
 export const openSourceProducts: Product[] = [
@@ -227,201 +236,158 @@ export const cloudProducts: Product[] = [
 ]
 
 // 社区网站
-export const communityProducts: Product[] = [
+export const communityProducts: WebSite[] = [
   {
     id: 'openclaw-cn',
     name: 'OpenClaw 中文社区',
-    company: '社区',
     category: ['社区网站', '免费'],
-    
     description: 'OpenClaw 最大中文社区',
     url: 'https://www.openclawcn.cc/',
-    members: '5000+',
-    skills: '120+ 中文技能',
-    features: '日活 1200+',
-    stars: defaultStars,
     tags: ['chinese'],
+    image: './ecosystem/openclaw-cn.webp',
   },
   {
     id: 'clawd-cn',
     name: 'Clawd 中文社区',
-    company: '社区',
     category: ['社区网站', '免费'],
-    
+
     description: 'OpenClaw 中文社区分支，完全开源免费',
     url: 'https://clawd.org.cn/',
-    features: '论坛讨论，开源免费',
-    stars: defaultStars,
     tags: ['chinese'],
   },
   {
     id: 'discord',
     name: 'Discord 官方社区',
-    company: 'Discord',
     category: ['社区网站', '免费'],
-    
     description: '官方 Discord 社区，最活跃的交流平台',
     url: 'https://discord.gg/clawd',
-    features: '实时讨论、玩法分享、Bug 求助',
-    stars: defaultStars,
     tags: [],
+    image: './ecosystem/discord.webp',
   },
   {
     id: 'github-discussions',
     name: 'GitHub Discussions',
-    company: 'GitHub',
     category: ['社区网站', '免费'],
-    
     description: '官方 GitHub 技术讨论区',
     url: 'https://github.com/openclaw/openclaw/discussions',
-    features: '功能建议、Issue 追踪',
-    stars: defaultStars,
     tags: [],
   },
   {
     id: 'twitter',
     name: 'OpenClaw 官方 Twitter',
-    company: 'Twitter/X',
     category: ['社区网站', '免费'],
-    
     description: '官方 Twitter 账号，新功能发布和用户成果分享',
     url: 'https://x.com/openclaw',
-    features: '新功能发布、用户成果分享',
-    stars: defaultStars,
     tags: [],
+    image: './ecosystem/twitter.webp',
   },
   {
     id: 'open-claw-me',
     name: 'Open-Claw.me',
-    company: '社区',
     category: ['社区网站', '免费'],
-    
     description: '独立社区资源网站，提供教程和指南',
     url: 'https://open-claw.me/zh/about',
-    stars: defaultStars,
     tags: ['chinese'],
+    image: './ecosystem/open-claw-me.webp',
   },
   {
     id: 'awesome-openclaw',
     name: 'Awesome OpenClaw',
-    company: 'GitHub',
     category: ['社区网站', '免费'],
-    
     description: 'OpenClaw 生态资源汇总',
     url: 'https://github.com/vincentkoc/awesome-openclaw',
-    stars: defaultStars,
     tags: [],
   },
   {
     id: 'clawlodge',
     name: 'Clawlodge',
-    company: 'Memepilot',
     category: ['社区网站', '免费'],
-    
     description: '社区共享和发现优化的 OpenClaw 配置',
     url: 'https://github.com/memepilot/clawlodge',
-    stars: defaultStars,
     tags: [],
   },
 ]
 
 // 生态工具
-export const ecosystemProducts: Product[] = [
+export const ecosystemProducts: WebSite[] = [
   {
     id: 'clawhub',
     name: 'ClawHub 官方技能市场',
-    company: 'ClawHub',
     category: ['生态工具', '免费'],
-    
     description: '官方技能注册中心，类似 npm 之于 Node.js',
     url: 'https://clawhub.ai/',
-    skills: '19000+',
-    stars: defaultStars,
     tags: ['skills-market'],
+    image: './ecosystem/clawhub.webp',
   },
   {
     id: 'openclaw-skills',
     name: 'OpenClaw Skills 官方仓库',
-    company: 'OpenClaw',
     category: ['生态工具', '免费'],
-    
     description: '官方技能 GitHub 仓库',
     url: 'https://github.com/openclaw/skills',
-    stars: defaultStars,
     tags: ['skills-market'],
   },
   {
     id: 'openclawskills-best',
     name: 'openclawskills.best',
-    company: '社区',
     category: ['生态工具', '免费'],
-    
     description: '安全过滤器，适配生产环境',
     url: 'https://openclawskills.best',
-    stars: defaultStars,
     tags: ['skills-market'],
+    image: './ecosystem/openclawskills-best.webp',
   },
   {
     id: 'skills-sh',
     name: 'Skills.sh',
-    company: 'Skills.sh',
     category: ['生态工具', '免费'],
-    
     description: '精选技能市场，官方技能 51+，安装 6.4K+',
     url: 'https://skills.sh',
-    skills: '51+',
-    stars: defaultStars,
     tags: ['skills-market'],
+    image: './ecosystem/skills-sh.webp',
   },
   {
     id: 'lobehub',
     name: 'LobeHub',
-    company: 'LobeHub',
     category: ['生态工具', '免费'],
-    
+
     description: '精选垂类技能平台',
     url: 'https://lobehub.com',
-    stars: defaultStars,
     tags: ['skills-market'],
+    image: './ecosystem/lobehub.webp',
   },
   {
     id: 'voltagent',
     name: 'VoltAgent',
-    company: 'VoltAgent',
     category: ['生态工具', '免费'],
-    
+
     description: '精选垂类技能平台',
     url: 'https://voltagent.com',
-    stars: defaultStars,
     tags: ['skills-market'],
   },
   {
     id: 'clawsphere',
     name: 'Clawsphere',
-    company: 'Clawsphere',
     category: ['生态工具', '免费'],
-    
     description: 'OpenClaw 代理职业声誉和劳动市场',
     url: 'https://clawsphere.io',
-    stars: defaultStars,
     tags: [],
   },
   {
     id: 'openclaw-cn-skills',
     name: 'OpenClaw 中文技能市场',
-    company: 'Clawd',
     category: ['生态工具', '免费'],
-    
     description: '用户自发布技能，经过真实 Agent 环境测试',
     url: 'http://clwd.org.cn/skills',
-    stars: defaultStars,
     tags: ['skills-market', 'chinese'],
   },
 ]
 
-export const products: Product[] = [
+export const products: WebSite[] = [
+  ...communityProducts,
+  ...ecosystemProducts,
+];
+
+export const featuredProducts: Product[] = [
   ...openSourceProducts,
   ...cloudProducts,
 ];
-
-export const featuredProducts = products

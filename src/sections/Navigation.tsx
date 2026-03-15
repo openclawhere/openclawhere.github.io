@@ -8,7 +8,7 @@ const navLinks = [
   { name: '龙虾产品', to: '/products' },
   { name: '模型服务', to: '/models' },
   { name: '资源生态', to: '/ecosystem' },
-  { name: '免费资料', to: '/resources' },
+  // { name: '免费资料', to: '/resources' },
 ];
 
 export default function Navigation() {

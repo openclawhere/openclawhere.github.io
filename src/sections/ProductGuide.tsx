@@ -1,103 +1,86 @@
 import { useState, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Filter, Search, SlidersHorizontal, X, ChevronDown, Grid3X3, List } from 'lucide-react';
+import { Filter, X, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Checkbox } from '@/components/ui/checkbox';
-import { products, categories, tagFilters, statusFilters } from '@/data/products';
+import { products } from '@/data/products';
 import { useDocumentMeta } from '@/hooks/use-document-meta';
-import { ProductCard } from '@/components/ProductCard';
+import { WebsiteCard } from '@/components/WebsiteCard';
 
 export default function ProductGuide() {
   useDocumentMeta({
     title: '探索 OpenClaw 生态',
     description: '从开源项目到云端服务，从社区网站到技能市场，一站式发现 OpenClaw 生态全景，智能筛选龙虾产品。',
   });
-  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
-  const [showFilters, setShowFilters] = useState(false);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [sortBy, setSortBy] = useState<'name' | 'stars'>('name');
+  const [searchQuery, setSearchQuery] = useState('');
 
-  // Read category from URL search params
-  const [searchParams] = useSearchParams();
-  const categoryParam = searchParams.get('category');
+  // Extract all unique categories
+  const allCategories = useMemo(() => {
+    const categories = new Set<string>();
+    products.forEach(p => p.category.forEach(c => categories.add(c)));
+    return Array.from(categories).sort();
+  }, []);
 
-  // Initialize selectedCategories from URL param, allow user override
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(() => {
-    const param = new URLSearchParams(window.location.search).get('category');
-    return param ? [param] : [];
-  });
+  // Extract all unique tags
+  const allTags = useMemo(() => {
+    const tags = new Set<string>();
+    products.forEach(p => p.tags.forEach(t => tags.add(t)));
+    return Array.from(tags).sort();
+  }, []);
 
-  // Show filters panel if category param exists
-  const shouldShowFilters = showFilters || !!categoryParam;
-
-  // Derive filtered products with useMemo instead of useEffect + setState
+  // Derive filtered products
   const filteredProducts = useMemo(() => {
     let result = [...products];
 
     // Search filter
     if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      result = result.filter(
-        p =>
-          p.name.toLowerCase().includes(query) ||
-          p.company.toLowerCase().includes(query) ||
-          p.description.toLowerCase().includes(query)
-      );
+      const query = searchQuery.toLowerCase().trim();
+      if (query) {
+        result = result.filter(
+          p =>
+            p.name.toLowerCase().includes(query) ||
+            p.description.toLowerCase().includes(query)
+        );
+      }
     }
 
-    // Category filter
+    // Category filter (OR logic)
     if (selectedCategories.length > 0) {
-      result = result.filter(p => 
-        selectedCategories.some(cat => p.category.includes(cat))
+      result = result.filter(p =>
+        selectedCategories.some(c => p.category.includes(c))
       );
     }
 
-    // Tag filter
+    // Tag filter (OR logic)
     if (selectedTags.length > 0) {
       result = result.filter(p =>
         selectedTags.some(t => p.tags.includes(t))
       );
     }
 
-    // Status filter
-    if (selectedStatuses.length > 0) {
-      result = result.filter(p => {
-        if (selectedStatuses.includes('beta') && p.status) return true;
-        if (selectedStatuses.includes('released') && !p.status) return true;
-        return false;
-      });
-    }
-
-    // Sort
+    // Sort by name
     result.sort((a, b) => {
-      switch (sortBy) {
-        case 'stars': {
-          // Stars is now an object, not suitable for sorting
-          // Can be implemented later if needed based on recommendation score
-          return 0;
-        }
-        case 'name':
-        default:
-          return a.name.localeCompare(b.name);
-      }
+      return a.name.localeCompare(b.name);
     });
 
     return result;
-  }, [searchQuery, selectedCategories, selectedTags, selectedStatuses, sortBy]);
+  }, [selectedCategories, selectedTags, searchQuery]);
 
-  const toggleFilter = (
-    value: string,
-    selected: string[],
-    setSelected: (values: string[]) => void
-  ) => {
-    if (selected.includes(value)) {
-      setSelected(selected.filter(v => v !== value));
+  const toggleCategory = (category: string) => {
+    if (selectedCategories.includes(category)) {
+      setSelectedCategories(selectedCategories.filter(c => c !== category));
     } else {
-      setSelected([...selected, value]);
+      setSelectedCategories([...selectedCategories, category]);
+    }
+  };
+
+  const toggleTag = (tag: string) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter(t => t !== tag));
+    } else {
+      setSelectedTags([...selectedTags, tag]);
     }
   };
 
@@ -105,13 +88,9 @@ export default function ProductGuide() {
     setSearchQuery('');
     setSelectedCategories([]);
     setSelectedTags([]);
-    setSelectedStatuses([]);
   };
 
-  const activeFiltersCount =
-    selectedCategories.length +
-    selectedTags.length +
-    selectedStatuses.length;
+  const activeFiltersCount = selectedCategories.length + selectedTags.length;
 
   return (
     <section id="guide" className="py-20 lg:py-28 bg-[#f0f0f0]">
@@ -125,222 +104,147 @@ export default function ProductGuide() {
             探索 <span className="text-gradient">OpenClaw 生态</span>
           </h2>
           <p className="text-[#666666] max-w-2xl mx-auto">
-            从开源项目到云端服务，从社区网站到技能市场，一站式发现 OpenClaw 生态全景
+            从社区网站到生态工具，一站式发现 OpenClaw 活跃生态
           </p>
         </div>
 
-        {/* Search & Filter Bar */}
-        <div className="bg-white rounded-2xl shadow-lg p-4 mb-8">
-          <div className="flex flex-col lg:flex-row gap-4">
-            {/* Search */}
-            <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666]" />
-              <Input
-                placeholder="搜索产品、公司或描述..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 h-12 rounded-xl border-gray-200 focus:border-[#4d67ff] focus:ring-[#4d67ff]"
-              />
+        {/* Filter Bar */}
+        <div className="bg-white rounded-2xl shadow-sm p-6 mb-8 border border-gray-100 flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
+          <div className="flex flex-col gap-4 flex-1">
+            {/* Categories */}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm font-medium text-[#666666] mr-2 min-w-[60px]">分类:</span>
+              {allCategories.map((category) => {
+                const isActive = selectedCategories.includes(category);
+                return (
+                  <button
+                    key={category}
+                    onClick={() => toggleCategory(category)}
+                    className={`px-4 py-1.5 rounded-xl text-sm font-medium transition-all ${
+                      isActive
+                        ? 'bg-[#4d67ff] text-white shadow-md hover:-translate-y-0.5'
+                        : 'bg-gray-50 text-[#666666] hover:bg-gray-100 hover:text-[#333333]'
+                    }`}
+                  >
+                    {category}
+                  </button>
+                );
+              })}
             </div>
 
-            {/* Filter Toggle */}
-            <Button
-              variant="outline"
-              className={`h-12 px-6 rounded-xl border-2 ${shouldShowFilters
-                ? 'border-[#4d67ff] text-[#4d67ff]'
-                : 'border-gray-200 text-[#666666]'
-                }`}
-              onClick={() => setShowFilters(!showFilters)}
-            >
-              <SlidersHorizontal className="w-5 h-5 mr-2" />
-              筛选
-              {activeFiltersCount > 0 && (
-                <span className="ml-2 px-2 py-0.5 rounded-full bg-[#4d67ff] text-white text-xs">
-                  {activeFiltersCount}
-                </span>
-              )}
-            </Button>
-
-            {/* Sort */}
-            <div className="relative">
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as 'name' | 'stars')}
-                className="h-12 px-4 pr-10 rounded-xl border-2 border-gray-200 text-[#666666] focus:border-[#4d67ff] focus:outline-none appearance-none bg-white cursor-pointer"
-              >
-                <option value="name">按名称</option>
-                <option value="stars">按星数</option>
-              </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666666] pointer-events-none" />
-            </div>
-
-            {/* View Mode */}
-            <div className="flex gap-2">
-              <Button
-                variant={viewMode === 'grid' ? 'default' : 'outline'}
-                size="icon"
-                className={`h-12 w-12 rounded-xl ${viewMode === 'grid'
-                  ? 'bg-[#4d67ff] text-white'
-                  : 'border-gray-200 text-[#666666]'
-                  }`}
-                onClick={() => setViewMode('grid')}
-              >
-                <Grid3X3 className="w-5 h-5" />
-              </Button>
-              <Button
-                variant={viewMode === 'list' ? 'default' : 'outline'}
-                size="icon"
-                className={`h-12 w-12 rounded-xl ${viewMode === 'list'
-                  ? 'bg-[#4d67ff] text-white'
-                  : 'border-gray-200 text-[#666666]'
-                  }`}
-                onClick={() => setViewMode('list')}
-              >
-                <List className="w-5 h-5" />
-              </Button>
+            {/* Tags */}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm font-medium text-[#666666] mr-2 min-w-[60px]">标签:</span>
+              {allTags.map((tag) => {
+                const isActive = selectedTags.includes(tag);
+                return (
+                  <button
+                    key={tag}
+                    onClick={() => toggleTag(tag)}
+                    className={`px-4 py-1.5 rounded-xl text-sm font-medium transition-all ${
+                      isActive
+                        ? 'bg-[#4d67ff] text-white shadow-md hover:-translate-y-0.5'
+                        : 'bg-gray-50 text-[#666666] hover:bg-gray-100 hover:text-[#333333]'
+                    }`}
+                  >
+                    {tag}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          {/* Filter Panel */}
-          {shouldShowFilters && (
-            <div className="mt-6 pt-6 border-t border-gray-100 animate-slide-up">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* Category Filter */}
-                <div>
-                  <h4 className="font-semibold text-[#333333] mb-3">分类</h4>
-                  <div className="space-y-2">
-                    {categories.map((cat) => (
-                      <label
-                        key={cat.id}
-                        className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors"
-                      >
-                        <Checkbox
-                          checked={selectedCategories.includes(cat.id)}
-                          onCheckedChange={() =>
-                            toggleFilter(cat.id, selectedCategories, setSelectedCategories)
-                          }
-                        />
-                        <span className="text-sm text-[#666666]">{cat.name}</span>
-                        <span className="text-xs text-[#999999] ml-auto">({cat.count})</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Tag Filter */}
-                <div>
-                  <h4 className="font-semibold text-[#333333] mb-3">标签</h4>
-                  <div className="space-y-2">
-                    {tagFilters.map((tag) => (
-                      <label
-                        key={tag.id}
-                        className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors"
-                      >
-                        <Checkbox
-                          checked={selectedTags.includes(tag.id)}
-                          onCheckedChange={() =>
-                            toggleFilter(tag.id, selectedTags, setSelectedTags)
-                          }
-                        />
-                        <span className="text-sm text-[#666666]">{tag.name}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Status Filter */}
-                <div>
-                  <h4 className="font-semibold text-[#333333] mb-3">状态</h4>
-                  <div className="space-y-2">
-                    {statusFilters.map((s) => (
-                      <label
-                        key={s.id}
-                        className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors"
-                      >
-                        <Checkbox
-                          checked={selectedStatuses.includes(s.id)}
-                          onCheckedChange={() =>
-                            toggleFilter(s.id, selectedStatuses, setSelectedStatuses)
-                          }
-                        />
-                        <span className="text-sm text-[#666666]">{s.name}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-              </div>
-
-              {/* Clear Filters */}
-              {activeFiltersCount > 0 && (
-                <div className="mt-4 pt-4 border-t border-gray-100 flex justify-end">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={clearFilters}
-                    className="text-[#666666] hover:text-[#4d67ff]"
-                  >
-                    <X className="w-4 h-4 mr-1" />
-                    清除所有筛选
-                  </Button>
-                </div>
-              )}
-            </div>
-          )}
+          {/* Search */}
+          <div className="relative shrink-0 w-full md:w-64 self-start md:self-center">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Input
+              placeholder="搜索站点名称或描述..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9 h-11 rounded-xl border-gray-200 focus:border-[#4d67ff] focus:ring-[#4d67ff] bg-gray-50/50 focus:bg-white transition-colors"
+            />
+          </div>
         </div>
 
         {/* Results Count */}
         <div className="flex items-center justify-between mb-6">
           <p className="text-[#666666]">
-            找到 <span className="font-semibold text-[#333333]">{filteredProducts.length}</span> 个产品/项目
+            找到 <span className="font-semibold text-[#333333]">{filteredProducts.length}</span> 个站点
           </p>
           {activeFiltersCount > 0 && (
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-[#666666]">已应用筛选:</span>
-              {selectedCategories.map((cat) => (
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-sm text-[#666666]">已选择:</span>
+              {selectedCategories.map((category) => (
                 <Badge
-                  key={cat}
+                  key={`cat-${category}`}
                   variant="secondary"
-                  className="cursor-pointer hover:bg-red-100"
-                  onClick={() => toggleFilter(cat, selectedCategories, setSelectedCategories)}
+                  className="cursor-pointer hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors bg-white border border-gray-200"
+                  onClick={() => toggleCategory(category)}
                 >
-                  {categories.find(c => c.id === cat)?.name}
+                  <span className="text-xs text-blue-500 mr-1">分类</span>
+                  {category}
                   <X className="w-3 h-3 ml-1" />
                 </Badge>
               ))}
+              {selectedTags.map((tag) => (
+                <Badge
+                  key={`tag-${tag}`}
+                  variant="secondary"
+                  className="cursor-pointer hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors bg-white border border-gray-200"
+                  onClick={() => toggleTag(tag)}
+                >
+                  <span className="text-xs text-gray-400 mr-1">标签</span>
+                  {tag}
+                  <X className="w-3 h-3 ml-1" />
+                </Badge>
+              ))}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearFilters}
+                className="text-[#666666] hover:text-[#4d67ff] h-6 px-2 text-xs"
+              >
+                清除
+              </Button>
             </div>
           )}
         </div>
 
-        {/* Products Grid/List */}
-        <div
-          className={
-            viewMode === 'grid'
-              ? 'grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
-              : 'space-y-4'
-          }
-        >
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredProducts.map((product) => (
-            <ProductCard
+            <WebsiteCard
               key={product.id}
-              product={product}
-              variant="guide"
-              viewMode={viewMode}
+              website={product}
             />
           ))}
         </div>
 
         {/* Empty State */}
         {filteredProducts.length === 0 && (
-          <div className="text-center py-20">
+          <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm mb-12">
             <Filter className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-[#333333] mb-2">没有找到符合条件的产品</h3>
-            <p className="text-[#666666] mb-6">尝试调整筛选条件或搜索关键词</p>
-            <Button onClick={clearFilters} className="bg-[#4d67ff] hover:bg-[#3a4fcc]">
-              清除所有筛选
+            <h3 className="text-xl font-semibold text-[#333333] mb-2">没有找到符合条件的站点</h3>
+            <p className="text-[#666666] mb-6">尝试取消部分标签过滤</p>
+            <Button onClick={clearFilters} className="bg-[#4d67ff] hover:bg-[#3a4fcc] rounded-xl px-6">
+              清除过滤选项
             </Button>
           </div>
         )}
+
+        {/* Submit New Site */}
+        <div className="mt-16 text-center border-t border-gray-200/60 pt-16">
+          <h3 className="text-2xl font-bold text-[#333333] mb-3">你发现了优秀的 OpenClaw 生态站点？</h3>
+          <p className="text-[#666666] mb-8 max-w-lg mx-auto">
+            欢迎向我们提交你发现的有趣、有用的开源项目或社区网站，一起共建活力龙虾圈。
+          </p>
+          <Button 
+            size="lg"
+            className="bg-[#4d67ff] hover:bg-[#3a4fcc] text-white rounded-full px-8 h-12 shadow-[0_8px_30px_rgb(77,103,255,0.3)] hover:shadow-xl transition-all hover:-translate-y-1 font-medium"
+            onClick={() => window.open('https://github.com/openclawhere/openclawhere.github.io/issues', '_blank')}
+          >
+            没有找到？提交新站点
+          </Button>
+        </div>
       </div>
     </section>
   );
