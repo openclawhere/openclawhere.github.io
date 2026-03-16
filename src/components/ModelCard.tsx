@@ -1,5 +1,6 @@
 import { ExternalLink, Database, Zap } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { getDomain } from '@/lib/utils';
 
 interface ModelProps {
   id: string;
@@ -13,15 +14,6 @@ interface ModelProps {
 
 interface ModelCardProps {
   model: ModelProps;
-}
-
-function getDomain(url?: string) {
-  if (!url) return null;
-  try {
-    return new URL(url).hostname;
-  } catch {
-    return null;
-  }
 }
 
 export function ModelCard({ model }: ModelCardProps) {
