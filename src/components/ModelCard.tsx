@@ -15,18 +15,16 @@ interface ModelCardProps {
   model: ModelProps;
 }
 
-export function ModelCard({ model }: ModelCardProps) {
-  // Extract domain from url for favicon.im
-  const getDomain = (url?: string) => {
-    if (!url) return null;
-    try {
-      const urlObj = new URL(url);
-      return urlObj.hostname;
-    } catch {
-      return null;
-    }
-  };
+function getDomain(url?: string) {
+  if (!url) return null;
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return null;
+  }
+}
 
+export function ModelCard({ model }: ModelCardProps) {
   const domain = getDomain(model.url);
 
   return (
