@@ -1,6 +1,7 @@
 import { ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { getProductScores } from '@/lib/score';
+import { getCategoryEmoji } from '@/lib/utils';
 import type { Product } from '@/data/products';
 
 interface ProductCardProps {
@@ -34,10 +35,7 @@ export function ProductCard({
           </div>
         ) : (
           <div className={`${viewMode === 'list' ? 'w-[200px] sm:w-[240px] shrink-0 aspect-video rounded-xl overflow-hidden relative bg-gradient-to-br from-[#4d67ff]/10 via-[#6b82ff]/5 to-[#f8f9ff] flex items-center justify-center text-5xl hidden sm:flex' : 'w-full aspect-video overflow-hidden relative bg-gradient-to-br from-[#4d67ff]/10 via-[#6b82ff]/5 to-[#f8f9ff] flex items-center justify-center text-6xl'} transition-transform duration-500 group-hover:scale-105 transform-gpu`}>
-            {product.category.includes('开源项目') && '🦞'}
-            {product.category.includes('云产品') && '☁️'}
-            {product.category.includes('社区网站') && '👥'}
-            {product.category.includes('生态工具') && '🔧'}
+            {getCategoryEmoji(product.category)}
           </div>
         )}
 
@@ -180,10 +178,7 @@ export function ProductCard({
           />
         ) : (
           <div className={`text-6xl transition-transform duration-500 ${isHovered ? 'scale-125' : 'scale-100'}`}>
-            {product.category.includes('开源项目') && '🦞'}
-            {product.category.includes('云产品') && '☁️'}
-            {product.category.includes('社区网站') && '👥'}
-            {product.category.includes('生态工具') && '🔧'}
+            {getCategoryEmoji(product.category)}
           </div>
         )}
         

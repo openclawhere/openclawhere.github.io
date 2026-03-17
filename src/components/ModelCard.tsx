@@ -1,6 +1,6 @@
 import { ExternalLink, Database, Zap } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { getDomain } from '@/lib/utils';
+import { getDomain, getCategoryEmoji } from '@/lib/utils';
 
 interface ModelProps {
   id: string;
@@ -46,11 +46,8 @@ export function ModelCard({ model }: ModelCardProps) {
                   }}
                 />
               ) : null}
-              <span 
-                className="text-2xl" 
-                style={{ display: domain ? 'none' : 'inline-block' }}
-              >
-                {model.category.includes('云产品') ? '☁️' : '📦'}
+              <span className="text-2xl">
+                {getCategoryEmoji(model.category)}
               </span>
               <Badge variant="secondary" className="bg-[#4d67ff]/10 text-[#4d67ff] hover:bg-[#4d67ff]/20 border-0 font-medium whitespace-nowrap text-xs">
                 {model.company}
