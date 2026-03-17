@@ -1,5 +1,6 @@
 import { ExternalLink, Database, Zap } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { getDomain, getCategoryEmoji } from '@/lib/utils';
 
 interface ModelProps {
   id: string;
@@ -16,17 +17,6 @@ interface ModelCardProps {
 }
 
 export function ModelCard({ model }: ModelCardProps) {
-  // Extract domain from url for favicon.im
-  const getDomain = (url?: string) => {
-    if (!url) return null;
-    try {
-      const urlObj = new URL(url);
-      return urlObj.hostname;
-    } catch {
-      return null;
-    }
-  };
-
   const domain = getDomain(model.url);
 
   return (
@@ -56,11 +46,8 @@ export function ModelCard({ model }: ModelCardProps) {
                   }}
                 />
               ) : null}
-              <span 
-                className="text-2xl" 
-                style={{ display: domain ? 'none' : 'inline-block' }}
-              >
-                {model.category.includes('云产品') ? '☁️' : '📦'}
+              <span className="text-2xl">
+                {getCategoryEmoji(model.category)}
               </span>
               <Badge variant="secondary" className="bg-[#4d67ff]/10 text-[#4d67ff] hover:bg-[#4d67ff]/20 border-0 font-medium whitespace-nowrap text-xs">
                 {model.company}
@@ -101,14 +88,14 @@ export function ModelCard({ model }: ModelCardProps) {
       {/* Tags Section */}
       <div className="p-6 pt-4 mt-auto">
         <div className="flex flex-wrap gap-1.5">
-          {model.tags.map((tag, index) => {
+          {model.tags.map((tag) => {
             // Determine icon and color based on tag content
             const isPerf = tag.includes('推理') || tag.includes('速度');
             const Icon = isPerf ? Zap : Database;
             const bgClass = isPerf ? 'bg-amber-50 text-amber-600 border-amber-100' : 'bg-blue-50/50 text-[#4d67ff] border-blue-100';
             
             return (
-              <span key={index} className={`px-2.5 py-1 text-xs rounded-md border flex items-center gap-1 font-medium transition-colors ${bgClass}`}>
+              <span key={tag} className={`px-2.5 py-1 text-xs rounded-md border flex items-center gap-1 font-medium transition-colors ${bgClass}`}>
                 {isPerf && <Icon className="w-3 h-3" />}
                 {tag}
               </span>
