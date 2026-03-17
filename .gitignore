@@ -1,7 +1,6 @@
 node_modules
 pnpm-lock.yaml
 dist
-script
 .agent
 .vscode
 .DS_Store
